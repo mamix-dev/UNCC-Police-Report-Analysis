@@ -15,6 +15,7 @@ class Scraper:
                 self.fullLinkList.append(link['href'])
 
     def saveCleanLinks(self):
+        self.collectLinks()
         linksFile = open('./data/links.txt', 'w')
         for item in self.fullLinkList:
             if item.find('ninertimes') == -1:
