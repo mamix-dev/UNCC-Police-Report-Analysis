@@ -1,4 +1,5 @@
 import dateparser as dparser
+import datetime
 import uuid
 import requests
 import os
@@ -19,12 +20,12 @@ def downloadFiles():
 
 # Extracts the data from the PDFs and sends them to a text file.
 def extractText():
-    for reportName in os.listdir('./data/raw_reports'):
-        tup = reportName.split('.')
+    for report_name in os.listdir('./data/raw_reports'):
+        tup = report_name.split('.')
         ext = tup[1]
         name = tup[0]
         if ext == 'pdf':
-            stream = open(f'./data/raw_reports/{reportName}', 'rb')
+            stream = open(f'./data/raw_reports/{report_name}', 'rb')
             reader = PdfFileReader(stream)
             fullText = ''
             for pageNum in range(reader.numPages):
@@ -33,48 +34,41 @@ def extractText():
             txt_report = open(f'./data/txt_reports/{name}.txt', 'wb')
             txt_report.write((fullText).encode('utf8'))
 
-# def extractText():
-#     output_string = StringIO()
-#     for reportName in os.listdir('./data/raw_reports'):
-#         tup = reportName.split('.')
-#         ext = tup[1]
-#         name = tup[0]
-#         if ext == 'pdf':
-#             with open(f'./data/raw_reports/{reportName}', 'rb') as in_file:
-#                     parser = PDFParser(in_file)
-#                     doc = PDFDocument(parser)
-#                     rsrcmgr = PDFResourceManager()
-#                     device = TextConverter(rsrcmgr, output_string, laparams=LAParams())
-#                     interpreter = PDFPageInterpreter(rsrcmgr, device)
-#                     for page in PDFPage.create_pages(doc):
-#                         interpreter.process_page(page)
-#                     txt_report = open(f'./data/txt_reports/{name}.txt', 'wb')
-#                     txt_report.write((output_string.getvalue()).encode('utf8'))
-
-# extractText()
-
+# Iterates through text files and extracts data of import
 def extractData():
     count = 0
-    for reportName in os.listdir('./data/txt_reports'):
-        tup = reportName.split('.')
+    for report_name in os.listdir('./data/txt_reports'):
+        tup = report_name.split('.')
         ext = tup[1]
         name = tup[0]
         if ext == 'txt':
-            print(reportName)
-            fileStream = open(f'./data/txt_reports/{reportName}', 'rb')
+            count += 1
+            fileStream = open(f'./data/txt_reports/{report_name}', 'rb')
             date_found = False
+            json_contents = {}
+            # Iterate through all lines in text files
             for line in fileStream.readlines():
-                if date_found:
-                    break
                 line = line.decode('utf8')
-                date = dparser.parse(line)
-                if date != None:
-                    json_contents = {'date':str(date)}
-                    json_object = json.dumps(json_contents, indent = 4)
-                    json_file = open(f'./data/json_reports/{name}.json', 'w')
-                    json_file.write(json_object)
-                    json_file.close()
-                    date_found = True
+                # Finding the date
+                if not date_found:
+                    date = dparser.parse(line)
+                    if date != None:
+                        json_contents['date'] = str(date-datetime.timedelta(days=1))
+                        date_found = True
+                list_of_words = line.split()
+                # Finding total calls
+                total_call_phrase_words = ['CALLS', 'FOR', 'SERVICE']
+                if all(word in list_of_words for word in total_call_phrase_words):
+                    for word in list_of_words:
+                        if word.isdigit():
+                            json_contents['total_calls'] = int(word)
+                
+            # Writing extracted data to a .json under ./data/json_reports/
+            json_object = json.dumps(json_contents, indent = 4)
+            json_file = open(f'./data/json_reports/{name}.json', 'w')
+            json_file.write(json_object)
+            json_file.close()
+        print(f'{(count/1332)*100}% complete.')
 
 
 
