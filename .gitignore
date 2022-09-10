@@ -4,3 +4,5 @@
 !/data/logs/.gitkeep
 /data/txt_reports/*
 !/data/txt_reports/.gitkeep
+/data/json_reports/*
+!/data/json_reports/.gitkeep

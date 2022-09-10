@@ -1,16 +1,9 @@
-from io import StringIO
+import dateparser as dparser
 import uuid
 import requests
 import os
 from PyPDF2 import PdfFileReader
-import pandas as pd
-
-from pdfminer.converter import TextConverter
-from pdfminer.layout import LAParams
-from pdfminer.pdfdocument import PDFDocument
-from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
-from pdfminer.pdfpage import PDFPage
-from pdfminer.pdfparser import PDFParser
+import json
 
 # Downloads the pdfs from the website using the links provided by the links.txt file. PDFs go to ./data/raw_reports/
 def downloadFiles():
@@ -60,21 +53,29 @@ def extractText():
 
 # extractText()
 
-def checkForPhrase(phrase):
+def extractData():
     count = 0
     for reportName in os.listdir('./data/txt_reports'):
         tup = reportName.split('.')
         ext = tup[1]
+        name = tup[0]
         if ext == 'txt':
+            print(reportName)
             fileStream = open(f'./data/txt_reports/{reportName}', 'rb')
-            hasPhrase = False
+            date_found = False
             for line in fileStream.readlines():
+                if date_found:
+                    break
                 line = line.decode('utf8')
-                if line.find(phrase) != -1:
-                    hasPhrase = True
-                    print(line)
-                    count += 1
-    print(count)
+                date = dparser.parse(line)
+                if date != None:
+                    json_contents = {'date':str(date)}
+                    json_object = json.dumps(json_contents, indent = 4)
+                    json_file = open(f'./data/json_reports/{name}.json', 'w')
+                    json_file.write(json_object)
+                    json_file.close()
+                    date_found = True
 
 
-checkForPhrase('  ')
+
+extractData()
