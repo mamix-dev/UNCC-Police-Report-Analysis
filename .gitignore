@@ -1,2 +1,6 @@
 /data/raw_reports/*
 !/data/raw_reports/.gitkeep
+/data/logs/*
+!/data/logs/.gitkeep
+/data/txt_reports/*
+!/data/txt_reports/.gitkeep
