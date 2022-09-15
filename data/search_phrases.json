@@ -1,0 +1,41 @@
+{
+    "phrases":
+    [
+        {
+            "words" : ["CALLS", "FOR", "SERVICE"],
+            "phrase" : "total_calls"
+        },
+        {
+            "words" : ["CITATIONS/WARNING"],
+            "phrase" : "citations_warning"
+        },
+        {
+            "words" : ["CITATIONS/WRITTEN"],
+            "phrase" : "citations_written"
+        },
+        {
+            "words" : ["BUILDING", "ADMITS"],
+            "phrase" : "building_admits"
+        },
+        {
+            "words" : ["ESCORTS"],
+            "phrase" : "escorts"
+        },
+        {
+            "words" : ["FIRE", "ALARMS"],
+            "phrase" : "fire_alarms"
+        },
+        {
+            "words" : ["MEDICAL", "ASSISTS"],
+            "phrase" : "medical_assists"
+        },
+        {
+            "words" : ["MOTORIST", "ASSISTS"],
+            "phrase" : "motorist_assists"
+        },
+        {
+            "words" : ["OTHER"],
+            "phrase" : "other"
+        }
+    ]
+}

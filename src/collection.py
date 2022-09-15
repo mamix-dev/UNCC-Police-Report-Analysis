@@ -37,10 +37,17 @@ def extractText():
 # Iterates through text files and extracts data of import
 def extractData():
     count = 0
+    # Getting search phrases out
+    search_phrases = None
+    with open('./data/search_phrases.json', 'r') as json_search_phrases:
+        output = json.load(json_search_phrases)
+        search_phrases = output['phrases']
+    # Iterate through all text reports
     for report_name in os.listdir('./data/txt_reports'):
         tup = report_name.split('.')
         ext = tup[1]
         name = tup[0]
+        # Make sure we don't pick up the .gitignore
         if ext == 'txt':
             count += 1
             fileStream = open(f'./data/txt_reports/{report_name}', 'rb')
@@ -53,15 +60,17 @@ def extractData():
                 if not date_found:
                     date = dparser.parse(line)
                     if date != None:
+                        # The first date on the file is the day it is posted, but the day it is posted is the day after the events of the report take place
                         json_contents['date'] = str(date-datetime.timedelta(days=1))
                         date_found = True
                 list_of_words = line.split()
-                # Finding total calls
-                total_call_phrase_words = ['CALLS', 'FOR', 'SERVICE']
-                if all(word in list_of_words for word in total_call_phrase_words):
-                    for word in list_of_words:
-                        if word.isdigit():
-                            json_contents['total_calls'] = int(word)
+                # Finding phrases
+                for obj in search_phrases:    
+                    phrase_words = obj['words']
+                    if all(word in list_of_words for word in phrase_words):
+                        for word in list_of_words:
+                            if word.isdigit():
+                                json_contents[obj['phrase']] = int(word)
                 
             # Writing extracted data to a .json under ./data/json_reports/
             json_object = json.dumps(json_contents, indent = 4)
