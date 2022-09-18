@@ -6,3 +6,5 @@
 !/data/txt_reports/.gitkeep
 /data/json_reports/*
 !/data/json_reports/.gitkeep
+/data/filtered_reports/*
+!/data/filtered_reports/.gitkeep

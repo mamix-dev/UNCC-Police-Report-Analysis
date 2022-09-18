@@ -32,7 +32,7 @@ def extractText():
                 raw_text = reader.getPage(pageNum).extract_text()
                 fullText += ('\n' + raw_text + '\n')
             txt_report = open(f'./data/txt_reports/{name}.txt', 'wb')
-            txt_report.write((fullText).encode('utf8'))
+            txt_report.write((fullText).encode('UTF-8'))
 
 # Iterates through text files and extracts data of import
 def extractData():
@@ -54,7 +54,8 @@ def extractData():
             date_found = False
             json_contents = {}
             # Iterate through all lines in text files
-            for line in fileStream.readlines():
+            all_lines = fileStream.readlines()
+            for line in all_lines:
                 line = line.decode('utf8')
                 # Finding the date
                 if not date_found:
@@ -71,7 +72,10 @@ def extractData():
                         for word in list_of_words:
                             if word.isdigit():
                                 json_contents[obj['phrase']] = int(word)
-                
+                # Pulling out the incidents from the reports
+                for idx, word in enumerate(list_of_words):
+                    if word == 'INCIDENT' and idx == 0 and len(list_of_words) != 0:
+                        print(line)
             # Writing extracted data to a .json under ./data/json_reports/
             json_object = json.dumps(json_contents, indent = 4)
             json_file = open(f'./data/json_reports/{name}.json', 'w')
