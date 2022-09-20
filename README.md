@@ -5,5 +5,5 @@ Currently, I'm still trying to extract data out of the pdfs and into more organi
 
 After extracting the data using PyPDF and putting into text, I extracted some metadata on the reports.
 
-Wanting to get out the individual responses, I used [tabula-java](https://github.com/tabulapdf/tabula-java) to extract the tables.
+Wanting to get out the individual responses, I used [camelot-py](https://github.com/camelot-dev/camelot) to extract the tables.
 I am now in the process of cleaning the data.
