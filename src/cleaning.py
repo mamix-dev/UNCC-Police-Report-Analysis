@@ -1,10 +1,5 @@
 import pandas as pd
 
-# # Creating headers
-# headers = []
-# for x in range(20):
-#     headers.append(f'h{x}')
-
 df = pd.read_csv('./test-page-1-table-1.csv')
 print(df)
 

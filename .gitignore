@@ -8,3 +8,5 @@
 !/data/json_reports/.gitkeep
 /data/filtered_reports/*
 !/data/filtered_reports/.gitkeep
+/src/unused_scripts/*
+!/src/unused_scripts/.gitkeep
