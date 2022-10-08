@@ -1,4 +1,6 @@
 requests
-BeautifulSoup
+beautifulsoup4
+camelot
+dateparser
 PyPDF2
 uuid
