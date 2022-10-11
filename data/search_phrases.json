@@ -37,5 +37,16 @@
             "words" : ["OTHER"],
             "phrase" : "other"
         }
+    ],
+    "keywords":
+    [
+        {
+            "words" : "There were no criminal incidents, or vehicular accidents, at Center City for the time period",
+            "phrase" : "center_city"
+        },
+        {
+            "words" : "There were no criminal incidents, or vehicular accidents, for the time period indicated above.",
+            "phrase" : "main_campus"
+        }
     ]
 }
